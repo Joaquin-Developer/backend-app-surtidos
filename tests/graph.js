@@ -10,6 +10,13 @@ async function getGata() {
 addEventListener("load", async () => {
 
     const data = await getGata()
+    console.log(data)
+
+    if (!data || data.length === 0) {
+        alert("No hay data para mostrar")
+        return
+    }
+
     const graphJsonData = { labels: [], data: [] }
 
     data.forEach(elem => {
