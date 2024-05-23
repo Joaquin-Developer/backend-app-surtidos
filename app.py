@@ -52,6 +52,12 @@ def get_data(sql_query: str, data: tuple) -> List:
     return rows
 
 
+@app.route("/", methods=["GET"])
+def index():
+    client_ip = request.remote_addr
+    return jsonify({"ip_client": client_ip}), 200
+
+
 @app.route("/save_surtido_data", methods=["POST"])
 def add_data():
     if not request.json:
