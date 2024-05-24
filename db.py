@@ -1,7 +1,7 @@
 DB_CONFIG = {
     "prod": {
         "host": "joaquinpolivera.mysql.pythonanywhere-services.com",
-        "user": "root",
+        "user": "joaquinpolivera",
         "password": "",
         "database": "surtidos_app"
     },
