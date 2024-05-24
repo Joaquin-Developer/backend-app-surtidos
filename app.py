@@ -8,6 +8,7 @@ from flask_cors import CORS
 import pymysql
 from pymysql.connections import Connection
 from pymysql.cursors import Cursor
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from db import DB_CONFIG
 
@@ -16,6 +17,8 @@ logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 CORS(app)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
 
 def get_connection() -> Connection:
@@ -54,7 +57,7 @@ def get_data(sql_query: str, data: tuple) -> List:
 
 @app.route("/", methods=["GET"])
 def index():
-    client_ip = request.remote_addr
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     return jsonify({"ip_client": client_ip}), 200
 
 
