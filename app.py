@@ -117,7 +117,7 @@ def get_surtidos_data_by_user(user: str):
 
     except Exception as error:
         logging.warning(error)
-        return jsonify({"error": "Internal server Error"}), 500
+        return jsonify({"error": "Internal server Error", "msg": str(error)}), 500
 
 
 if __name__ == "__main__":
