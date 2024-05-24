@@ -79,7 +79,8 @@ def add_data():
     try:
         execute_query(sql, (username, json_products, total_price))
         return jsonify({"message": "Data added successfully!"}), 201
-    except:
+    except Exception as error:
+        logging.warning(error)
         return jsonify({"error": "Internal server Error"}), 500
 
 
@@ -109,7 +110,8 @@ def get_surtidos_data_by_user(user: str):
         json_data = sorted(json_data, key=lambda x: x["audit_date"])
         return jsonify(json_data), 200
 
-    except:
+    except Exception as error:
+        logging.warning(error)
         return jsonify({"error": "Internal server Error"}), 500
 
 
