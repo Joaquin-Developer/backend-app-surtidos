@@ -1,4 +1,5 @@
 """Flask API"""
+import os
 from typing import List
 import json
 import logging
@@ -20,13 +21,17 @@ CORS(app)
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
+ENV = os.getenv("environment") or "prod"
+
 
 def get_connection() -> Connection:
+    db_config = DB_CONFIG[ENV]
+
     return pymysql.connect(
-        host=DB_CONFIG["host"],
-        user=DB_CONFIG["user"],
-        password=DB_CONFIG["password"],
-        database=DB_CONFIG["database"]
+        host=db_config["host"],
+        user=db_config["user"],
+        password=db_config["password"],
+        database=db_config["database"]
     )
 
 
