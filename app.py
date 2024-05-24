@@ -107,10 +107,10 @@ def get_surtidos_data_by_user(user: str):
             for row in data
         ]
         json_data = sorted(json_data, key=lambda x: x["audit_date"])
-
         return jsonify(json_data), 200
+
     except:
-        return jsonify({"user": user}), 200
+        return jsonify({"error": "Internal server Error"}), 500
 
 
 if __name__ == "__main__":
