@@ -3,7 +3,7 @@ DB_CONFIG = {
         "host": "joaquinpolivera.mysql.pythonanywhere-services.com",
         "user": "joaquinpolivera",
         "password": "",
-        "database": "surtidos_app"
+        "database": "joaquinpolivera$surtidos_app"
     },
     "dev": {
         "host": "localhost",
@@ -12,4 +12,3 @@ DB_CONFIG = {
         "database": "surtidos_app"
     }
 }
-
