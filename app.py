@@ -80,7 +80,13 @@ def add_data():
     sql = """
         INSERT INTO data_surtidos (username, audit_date, json_products, total_price)
         VALUES (%s, now(), %s, %s)
+        ON DUPLICATE KEY UPDATE
+        json_products = VALUES(json_products),
+        total_price = VALUES(total_price),
+        audit_date = now(),
+        date_only = date(now())
     """
+
     try:
         execute_query(sql, (username, json_products, total_price))
         return jsonify({"message": "Data added successfully!"}), 201
