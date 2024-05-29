@@ -83,8 +83,7 @@ def add_data():
         ON DUPLICATE KEY UPDATE
         json_products = VALUES(json_products),
         total_price = VALUES(total_price),
-        audit_date = now(),
-        date_only = date(now())
+        audit_date = now()
     """
 
     try:
