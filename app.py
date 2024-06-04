@@ -34,7 +34,7 @@ def add_data():
     print(req)
 
     username = req["username"]
-    json_products = req["json_products"]
+    json_products = str(req["json_products"])
     total_price = req["total_price"]
 
     sql = """

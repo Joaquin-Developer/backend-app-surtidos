@@ -35,6 +35,7 @@ def execute_query(sql_query: str, data: tuple):
     except Exception as error:
         logging.warning(error)
         connection.rollback()
+        raise error
     else:
         connection.commit()
         cursor.close()
