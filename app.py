@@ -36,14 +36,15 @@ def add_data():
     username = req["username"]
     json_products = str(req["json_products"])
     total_price = req["total_price"]
+    audit_date = req["audit_date"]
 
-    sql = """
+    sql = f"""
         INSERT INTO data_surtidos (username, audit_date, json_products, total_price)
-        VALUES (%s, now(), %s, %s)
+        VALUES (%s, '{audit_date}', %s, %s)
         ON DUPLICATE KEY UPDATE
         json_products = VALUES(json_products),
         total_price = VALUES(total_price),
-        audit_date = now()
+        audit_date = '{audit_date}'
     """
 
     try:
