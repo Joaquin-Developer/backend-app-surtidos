@@ -107,7 +107,7 @@ def get_surtidos_data_by_user(user: str):
                 "surtido_id": row[0],
                 "username": row[1],
                 "audit_date": str(row[2]),
-                "json_products": json.loads(row[3]),
+                "json_products": json.loads(json.dumps(eval(row[3]))),
                 "total_price": float(row[4])
             }
             for row in data
