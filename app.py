@@ -76,6 +76,7 @@ def get_surtidos_data_by_user(user: str):
                 "total_price": float(row[4])
             }
             for row in data
+            if float(row[4]) > 0
         ]
         json_data = sorted(json_data, key=lambda x: x["audit_date"])
         return jsonify(json_data), 200
