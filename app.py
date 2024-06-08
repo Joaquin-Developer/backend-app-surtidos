@@ -1,17 +1,13 @@
 """Flask API"""
 import os
-from typing import List
 import json
 import logging
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pymysql
-from pymysql.connections import Connection
-from pymysql.cursors import Cursor
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from db import DB_CONFIG
+import utils
 
 
 logging.basicConfig(level=logging.INFO)
@@ -22,42 +18,6 @@ CORS(app)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
 ENV = os.getenv("environment") or "prod"
-
-
-def get_connection() -> Connection:
-    db_config = DB_CONFIG[ENV]
-
-    return pymysql.connect(
-        host=db_config["host"],
-        user=db_config["user"],
-        password=db_config["password"],
-        database=db_config["database"]
-    )
-
-
-def execute_query(sql_query: str, data: tuple):
-    connection = get_connection()
-    cursor: Cursor = connection.cursor()
-
-    try:
-        cursor.execute(sql_query, data)
-    except Exception as error:
-        logging.warning(error)
-        connection.rollback()
-    else:
-        connection.commit()
-        cursor.close()
-        connection.close()
-
-
-def get_data(sql_query: str, data: tuple) -> List:
-    connection = get_connection()
-    cursor: Cursor = connection.cursor()
-    cursor.execute(sql_query, data)
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return rows
 
 
 @app.route("/", methods=["GET"])
@@ -74,15 +34,20 @@ def add_data():
     print(req)
 
     username = req["username"]
-    json_products = req["json_products"]
+    json_products = str(req["json_products"])
     total_price = req["total_price"]
 
     sql = """
         INSERT INTO data_surtidos (username, audit_date, json_products, total_price)
         VALUES (%s, now(), %s, %s)
+        ON DUPLICATE KEY UPDATE
+        json_products = VALUES(json_products),
+        total_price = VALUES(total_price),
+        audit_date = now()
     """
+
     try:
-        execute_query(sql, (username, json_products, total_price))
+        utils.execute_query(sql, (username, json_products, total_price))
         return jsonify({"message": "Data added successfully!"}), 201
     except Exception as error:
         logging.warning(error)
@@ -101,7 +66,7 @@ def get_surtidos_data_by_user(user: str):
     """
 
     try:
-        data = get_data(sql, (user))
+        data = utils.get_data(sql, (user))
         json_data = [
             {
                 "surtido_id": row[0],
@@ -121,4 +86,4 @@ def get_surtidos_data_by_user(user: str):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=(ENV != "prod"))

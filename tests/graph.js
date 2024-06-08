@@ -1,7 +1,7 @@
 
 async function getGata() {
     const username = "Joaquin"
-    const URL = `http://localhost:5000/get_surtidos_data/${username}`
+    const URL = `https://joaquinpolivera.pythonanywhere.com/get_surtidos_data/${username}`
     const json = await (await fetch(URL)).json()
     return json
 }
