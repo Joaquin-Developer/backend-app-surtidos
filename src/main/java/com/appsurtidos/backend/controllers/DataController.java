@@ -1,6 +1,6 @@
-package com.appsurtidos.backend.controller;
+package com.appsurtidos.backend.controllers;
 
-import com.appsurtidos.backend.model.ScrapperProduct;
+import com.appsurtidos.backend.models.ScrapperProduct;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

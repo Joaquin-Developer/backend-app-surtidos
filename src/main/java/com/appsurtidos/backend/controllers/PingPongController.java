@@ -1,4 +1,4 @@
-package com.appsurtidos.backend.controller;
+package com.appsurtidos.backend.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
