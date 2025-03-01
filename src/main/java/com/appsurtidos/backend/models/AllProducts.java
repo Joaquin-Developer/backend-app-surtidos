@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "all_products")
@@ -14,8 +15,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AllProducts {
-    @EmbeddedId
-    private AllProductsId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idProduct;
+
+    @Column(nullable = false)
+    private LocalDateTime scrapingDate;
+
+    @Column(nullable = true)
+    private Long ean;
 
     @Column(nullable = false, length = 200)
     private String name;
@@ -32,15 +40,4 @@ public class AllProducts {
     @ManyToOne
     @JoinColumn(name = "supermarket_chain_id", nullable = false)
     private SupermarketChain supermarketChain;
-
-//    public AllProducts() {}
-//
-//    public AllProducts(AllProductsId id, String name, String imageLink, String currency, BigDecimal price, SupermarketChain supermarketChain) {
-//        this.id = id;
-//        this.name = name;
-//        this.imageLink = imageLink;
-//        this.currency = currency;
-//        this.price = price;
-//        this.supermarketChain = supermarketChain;
-//    }
 }

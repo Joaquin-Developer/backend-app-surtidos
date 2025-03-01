@@ -10,16 +10,21 @@ public class AllProductDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private LocalDateTime scrapingDate;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String ean;
+    // default null
+    private Long ean;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String imageLink;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String currency;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal price;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long supermarketChainId;
 }

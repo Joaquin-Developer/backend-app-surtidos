@@ -2,7 +2,6 @@ package com.appsurtidos.backend.service;
 
 import com.appsurtidos.backend.dto.AllProductDTO;
 import com.appsurtidos.backend.models.AllProducts;
-import com.appsurtidos.backend.models.AllProductsId;
 import com.appsurtidos.backend.models.SupermarketChain;
 import com.appsurtidos.backend.repository.AllProductRepository;
 import com.appsurtidos.backend.repository.SupermarketChainRepository;
@@ -28,13 +27,12 @@ public class AllProductService {
         SupermarketChain supermarket = supermarketRepository.findById(dto.getSupermarketChainId())
                 .orElseThrow(() -> new RuntimeException("Supermarket chain not found"));
 
-        String ean = (dto.getEan() != null) ? dto.getEan() : "0";
+        Long ean = (dto.getEan() != null) ? dto.getEan() : -1;
         LocalDateTime scrapingDate = (dto.getScrapingDate() != null) ? dto.getScrapingDate() : LocalDateTime.now();
 
-        AllProductsId productId = new AllProductsId(scrapingDate, ean);
         AllProducts product = new AllProducts();
-
-        product.setId(productId);
+        product.setEan(ean);
+        product.setScrapingDate(scrapingDate);
         product.setName(dto.getName());
         product.setImageLink(dto.getImageLink());
         product.setCurrency(dto.getCurrency());
@@ -49,13 +47,12 @@ public class AllProductService {
             SupermarketChain supermarket = supermarketRepository.findById(dto.getSupermarketChainId())
                     .orElseThrow(() -> new RuntimeException("Supermarket chain not found"));
 
-            String ean = (dto.getEan() != null) ? dto.getEan() : "0";
+            Long ean = (dto.getEan() != null) ? dto.getEan() : -1;
             LocalDateTime scrapingDate = (dto.getScrapingDate() != null) ? dto.getScrapingDate() : LocalDateTime.now();
 
-            AllProductsId productId = new AllProductsId(scrapingDate, ean);
             AllProducts product = new AllProducts();
-
-            product.setId(productId);
+            product.setEan(ean);
+            product.setScrapingDate(scrapingDate);
             product.setName(dto.getName());
             product.setImageLink(dto.getImageLink());
             product.setCurrency(dto.getCurrency());
