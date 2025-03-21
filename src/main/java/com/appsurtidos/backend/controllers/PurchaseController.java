@@ -3,13 +3,16 @@ package com.appsurtidos.backend.controllers;
 import com.appsurtidos.backend.dto.ProductPurchaseDTO;
 import com.appsurtidos.backend.models.ProductPurchase;
 import com.appsurtidos.backend.models.Purchase;
+import com.appsurtidos.backend.models.User;
 import com.appsurtidos.backend.service.PurchaseService;
 import com.appsurtidos.backend.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,11 +37,6 @@ public class PurchaseController {
         }
     }
 
-//    @PatchMapping("/{purchaseId}/finalize")
-//    public ResponseEntity<?> finalizePurchase(@PathVariable Long purchaseId) {
-//        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-//    }
-
     @PostMapping("/{purchaseId}/products")
     public ResponseEntity<ProductPurchase> addProductToPurchase(
             @PathVariable Long purchaseId,
@@ -48,17 +46,17 @@ public class PurchaseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productPurchase);
     }
 
-    // TODO implement:
-
-
-    @PutMapping("/{purchaseId}/products/{productPurchaseId}")
-    public ResponseEntity<?> updateProductInPurchase(@PathVariable Long purchaseId, @PathVariable Long productPurchaseId, @RequestBody Map<String, Object> updateData) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-    }
+//    @PutMapping("/{purchaseId}/products/{productPurchaseId}")
+//    public ResponseEntity<?> updateProductInPurchase(@PathVariable Long purchaseId, @PathVariable Long productPurchaseId, @RequestBody Map<String, Object> updateData) {
+//        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+//    }
 
     @GetMapping("/{purchaseId}/products")
-    public ResponseEntity<?> getProductsFromPurchase(@PathVariable Long purchaseId) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    public ResponseEntity<List<ProductPurchaseDTO>> getProductsFromPurchase(
+            @PathVariable Long purchaseId,
+            @AuthenticationPrincipal User user) {
+        List<ProductPurchaseDTO> products = purchaseService.getProductsFromPurchase(purchaseId, user);
+        return ResponseEntity.ok(products);
     }
 
 }

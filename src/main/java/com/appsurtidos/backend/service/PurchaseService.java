@@ -8,10 +8,14 @@ import com.appsurtidos.backend.repository.ProductPurchaseRepository;
 import com.appsurtidos.backend.repository.PurchaseRepository;
 import com.appsurtidos.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PurchaseService {
@@ -61,5 +65,18 @@ public class PurchaseService {
         productPurchase.setCurrency(request.getCurrency() != null ? request.getCurrency() : DEFAULT_CURRENCY_CODE);
         productPurchase.setPrice(request.getPrice());
         return productPurchaseRepository.save(productPurchase);
+    }
+
+    public List<ProductPurchaseDTO> getProductsFromPurchase(Long purchaseId, User user) {
+        Purchase purchase = purchaseRepository.findById(purchaseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Purchase not found"));
+
+        if (!purchase.getUser().getUser_id().equals(user.getUser_id())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+
+        List<ProductPurchase> products = productPurchaseRepository.findByPurchase(purchase);
+
+        return products.stream().map(ProductPurchaseDTO::fromEntity).collect(Collectors.toList());
     }
 }
